@@ -1,4 +1,5 @@
 import { Post } from './post.model';
+import {HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -13,11 +14,22 @@ export class PostsService{
     private posts: Post[] = [];
     private postsUpdated=new Subject<Post[]>();
 
+    constructor(private http: HttpClient){
+
+    }
+
     getPosts(){
         //we created new array and coppied the posts array to return instead of return original posts array
         //we did this because arrays are reference type and we don't want to access to directly original array
         //in order to if the user change something on array we don't want the original posts array to be affected. 
-        return [...this.posts];
+        // return [...this.posts];
+
+        this.http.get<{message:string, posts:Post[]}>('http://localhost:3000/api/posts')
+        .subscribe((postData)=>{
+            this.posts = postData.posts;
+            this.postsUpdated.next([...this.posts]);
+        });
+
     }
 
     getPostUpdateListener(){
@@ -27,8 +39,13 @@ export class PostsService{
 
     addPost(postData:Post){
         const post:Post=postData;
-        this.posts.push(post);
-        //next means is that push and emit new value which is the copy of after update post 
-        this.postsUpdated.next([...this.posts]);
+        this.http.post<{message:string}>('http://localhost:3000/api/posts',post)
+          .subscribe((responseData)=>{
+            console.log(responseData.message);
+            this.posts.push(post);
+            //next means is that push and emit new value which is the copy of after update post 
+            this.postsUpdated.next([...this.posts]);
+          });
+        
     }
 }
