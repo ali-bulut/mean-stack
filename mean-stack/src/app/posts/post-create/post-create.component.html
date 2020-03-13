@@ -1,0 +1,46 @@
+<!-- this usage [value] (property binding) is also get property or method from .ts file and set it 
+like {{}} this. 
+if we want to use this we should ensure that we use the value in [] parantheses. This is how the angular
+understand.-->
+<!-- #postInput => this is sign of the textarea. -->
+<!-- <textarea rows="6" [value]="newPost2" #postInput></textarea> -->
+
+
+<!-- ngModel => when we want to use it we have to add a module that is FormsModule to app.module.ts -->
+<!-- this is the two way binding. So we dont need to add #postInput to get or [value]="newPost" to set. -->
+<!-- ngModel is doing getting and setting operations automatically. -->
+<!-- this usage and the top of the usage are same. -->
+<!-- <textarea matInput rows="6" [(ngModel)]="enteredValue"></textarea> -->
+
+
+<!-- event binding => which is able to listen events and when the button is clicked onAddPost function
+which is in .ts file will be worked. -->
+<!-- postInput came from the textarea. So we send the textarea field to onAddPost function-->
+<!-- <button (click)="onAddPost2(postInput)">Save Post</button> -->
+<!-- <button (click)="onAddPost()">Save Post</button> -->
+
+<!-- string interpolation -->
+<!-- this can be method(it returns whatever the method returns) or property(it returns the value of property). -->
+<!-- <p>{{newPost2}</p> -->
+<!-- <p>{{newPost}}</p> -->
+
+
+<!-- the top of the all thing is that they are all same with the bottom of the elements. 
+they are just together with comment lines-->
+
+<mat-card>
+  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-form-field>
+      <!-- <input matInput type="text" [(ngModel)]="enteredTitle"> -->
+      <input matInput type="text" name="title" ngModel required minlength="3" placeholder="Post Title" #title="ngModel">
+      <mat-error *ngIf="title.invalid">Please enter a post title!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <!-- <textarea matInput rows="6" [(ngModel)]="enteredContent"></textarea> -->
+      <textarea matInput rows="4" name="content" ngModel required placeholder="Post Content" #content="ngModel"></textarea>
+      <mat-error *ngIf="content.invalid">Please enter a post content!</mat-error>
+    </mat-form-field>
+    <!-- <button mat-raised-button color="accent" (click)="onAddPost()">Save Post</button> -->
+    <button mat-raised-button color="accent" type="submit">Save Post</button>
+  </form>
+</mat-card>

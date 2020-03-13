@@ -1,0 +1,9 @@
+/* :host -> it targets the element's itself. I mean this element <app-post-list></app-post-list>  */
+:host {
+    display: block;
+    margin-top: 1rem;
+}
+
+.info-text{
+    text-align: center;
+}
