@@ -34,7 +34,7 @@ export class PostCreateComponent implements OnInit {
       return;
     }
     //form.value.title -> it came from the name of the elements
-    const post:Post={id:'jfsgkjnq22525',title:form.value.title,content:form.value.content};
+    const post:Post={id:null,title:form.value.title,content:form.value.content};
     // this.postCreated.emit(post);
     this.postsService.addPost(post);
 
