@@ -1,1 +1,13 @@
-<mat-toolbar color="primary">MyMessages</mat-toolbar>
+<mat-toolbar color="primary">
+    <span><a routerLink="/">MyMessages</a></span>
+    <span class="spacer"></span>
+    <ul>
+        <li>
+            <!-- when we use routerLink, this is not a normal http request. By using this, we are able
+            to re-render page without http request(refreshing the page) -->
+            <!-- routerLinkActive-> angular automatically understand that we are in /create route.
+            and it gives our <a></a> tag a css class. -->
+            <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
+        </li>
+    </ul>
+</mat-toolbar>
