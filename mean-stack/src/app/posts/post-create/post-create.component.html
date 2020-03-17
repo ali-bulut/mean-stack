@@ -29,7 +29,8 @@ which is in .ts file will be worked. -->
 they are just together with comment lines-->
 
 <mat-card>
-  <form (submit)="onSavePost(postForm)" #postForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
       <!-- <input matInput type="text" [(ngModel)]="enteredTitle"> -->
       <input matInput type="text" name="title" [ngModel]="post?.title" required minlength="3" placeholder="Post Title" #title="ngModel">

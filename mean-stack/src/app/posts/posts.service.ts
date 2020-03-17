@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 //we could use this type of describing instead of adding to app.module.ts in providers
 //but in this project we have to use this type of describing.
