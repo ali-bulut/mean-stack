@@ -3,6 +3,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import{Post} from '../post.model';
 import { NgForm } from '@angular/forms';
 import { PostsService } from '../posts.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-post-create',
@@ -11,9 +12,26 @@ import { PostsService } from '../posts.service';
 })
 export class PostCreateComponent implements OnInit {
 
-  constructor(public postsService:PostsService) { }
+  private mode='create';
+  private postId:string;
+  post:Post;
+
+  constructor(public postsService:PostsService, public route:ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((paramMap:ParamMap)=>{
+      if(paramMap.has('postId')){
+        this.mode='edit';
+        this.postId=paramMap.get('postId');
+        this.postsService.getPost(this.postId).subscribe(postData=>{
+          this.post={id:postData._id, title:postData.title, content:postData.content}
+        });
+      }
+      else{
+        this.mode='create';
+        this.postId=null;
+      }
+    });
   }
 
   //property defining (don't use with var let or const)
@@ -29,14 +47,20 @@ export class PostCreateComponent implements OnInit {
   //to listen we use @output()
   // @Output() postCreated = new EventEmitter<Post>();
 
-  onAddPost(form:NgForm){
+  onSavePost(form:NgForm){
     if(form.invalid){
       return;
     }
-    //form.value.title -> it came from the name of the elements
-    const post:Post={id:null,title:form.value.title,content:form.value.content};
-    // this.postCreated.emit(post);
-    this.postsService.addPost(post);
+    if(this.mode==="create"){
+      //form.value.title -> it came from the name of the elements
+      const post:Post={id:null,title:form.value.title,content:form.value.content};
+      //this.postCreated.emit(post);
+      this.postsService.addPost(post);
+    }
+    else{
+      this.postsService.updatePost(this.postId,form.value.title,form.value.content);
+    }
+    
 
     form.resetForm();
   }
