@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import{Post} from '../post.model';
+import {mimeType} from './mime-type.validator'
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -16,13 +17,16 @@ export class PostCreateComponent implements OnInit {
   private postId:string;
   post:Post;
   form:FormGroup;
+  imagePreview:string;
   isLoading=false;
   constructor(public postsService:PostsService, public route:ActivatedRoute, private router:Router) { }
 
   ngOnInit() {
     this.form=new FormGroup({
       'title': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
-      'content':new FormControl(null, {validators: [Validators.required]})
+      'content':new FormControl(null, {validators: [Validators.required]}),
+      //asyncValidators:[mimeType] by using this, we're only accepting the image files.(png,jgp etc.)
+      'image':new FormControl(null, {validators: [Validators.required], asyncValidators:[mimeType]})
     });
 
     this.route.paramMap.subscribe((paramMap:ParamMap)=>{
@@ -43,6 +47,19 @@ export class PostCreateComponent implements OnInit {
       }
     });
   }
+
+  onImagePicked(event:Event){
+    const file=(event.target as HTMLInputElement).files[0];
+    this.form.patchValue({'image':file});
+    this.form.get('image').updateValueAndValidity();
+    const reader=new FileReader();
+    reader.onload = () => {
+      this.imagePreview=reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+
 
   //property defining (don't use with var let or const)
   // newPost2='NO CONTENT';
