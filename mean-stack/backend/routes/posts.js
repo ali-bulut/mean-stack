@@ -36,9 +36,10 @@ router.post("", checkAuth, multer({storage:storage}).single("image"), (req,res,n
     const post=new Post({
         title:req.body.title,
         content:req.body.content,
-        imagePath:url + "/images/" + req.file.filename
+        imagePath:url + "/images/" + req.file.filename,
+        //we can access the userId from checkAuth middleware.
+        creator:req.userData.userId
     });
-
     //to save post to database
     post.save().then(createdPost => {
         res.status(201).json({
