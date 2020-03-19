@@ -5,10 +5,11 @@ const mongoose=require('mongoose');
 const path=require('path');
 
 const postsRoutes=require('./routes/posts');
+const userRoutes=require('./routes/user');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://alibulut:LJEpE1QGsRP9fSL4@mean-stack-db-uyxqu.mongodb.net/mean-stack-db?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false })
+mongoose.connect('mongodb+srv://alibulut:LJEpE1QGsRP9fSL4@mean-stack-db-uyxqu.mongodb.net/mean-stack-db?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false, useCreateIndex:true })
     .then(()=>{
         console.log("Connected to database!");
     })
@@ -30,6 +31,7 @@ app.use((req,res,next)=>{
 })
 
 app.use("/api/posts", postsRoutes);
+app.use("/api/user", userRoutes);
 
 
 module.exports = app;
