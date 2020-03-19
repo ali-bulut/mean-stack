@@ -2,18 +2,21 @@
     <span><a routerLink="/">MyMessages</a></span>
     <span class="spacer"></span>
     <ul>
-        <li>
+        <li *ngIf="userIsAuthenticated">
             <!-- when we use routerLink, this is not a normal http request. By using this, we are able
             to re-render page without http request(refreshing the page) -->
             <!-- routerLinkActive-> angular automatically understand that we are in /create route.
             and it gives our <a></a> tag a css class. -->
             <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
         </li>
-        <li>
+        <li *ngIf="!userIsAuthenticated">
             <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
         </li>
-        <li>
+        <li *ngIf="!userIsAuthenticated">
             <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Sign Up</a>
+        </li>
+        <li *ngIf="userIsAuthenticated">
+            <button (click)="onLogout()" mat-button>Log Out</button>
         </li>
     </ul>
 </mat-toolbar>
