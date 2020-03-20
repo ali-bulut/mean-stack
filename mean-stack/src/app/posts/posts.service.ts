@@ -5,6 +5,10 @@ import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+import{environment} from '../../environments/environment';
+
+const BACKEND_URL=environment.apiUrl+"/posts/";
+
 //we could use this type of describing instead of adding to app.module.ts in providers
 //but in this project we have to use this type of describing.
 //Because when we use this it will be like static classes.
@@ -27,7 +31,7 @@ export class PostsService{
         // return [...this.posts];
 
         const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
-        this.http.get<{message:string, posts:any, maxPosts:number}>('http://localhost:3000/api/posts' + queryParams)
+        this.http.get<{message:string, posts:any, maxPosts:number}>(BACKEND_URL + queryParams)
         //by using this, we will be able to convert our posts which are coming from db to our post.model
         //and now our posts are like our model.
         .pipe(map((postData)=>{
@@ -56,7 +60,7 @@ export class PostsService{
 
     getPost(id:string){
         return this.http.get<{_id:string, title:string, content:string, imagePath:string, creator:string}>
-        ("http://localhost:3000/api/posts/"+id);
+        (BACKEND_URL+id);
     }
 
     addPost(title:string, content:string, image:File){
@@ -65,7 +69,7 @@ export class PostsService{
         postData.append("title", title);
         postData.append("content",content);
         postData.append("image", image, title);
-        this.http.post<{message:string, post:Post}>('http://localhost:3000/api/posts',postData)
+        this.http.post<{message:string, post:Post}>(BACKEND_URL,postData)
           .subscribe((responseData)=>{
             // const post:Post={id:responseData.post.id, title:title, content:content, imagePath:image as unknown as string}
             // this.posts.push(post);
@@ -88,7 +92,7 @@ export class PostsService{
         else{
             postData={id:id,content:content,title:title,imagePath:image, creator:null};
          }
-        this.http.put("http://localhost:3000/api/posts/"+id,postData)
+        this.http.put(BACKEND_URL+id,postData)
             .subscribe(response=>{
                 // const updatedPosts = [...this.posts];
                 // const oldPostIndex= updatedPosts.findIndex(p=>p.id === id);
@@ -101,7 +105,7 @@ export class PostsService{
     }
 
     deletePost(postId:string){
-       return this.http.delete("http://localhost:3000/api/posts/"+postId)
+       return this.http.delete(BACKEND_URL+postId)
             // .subscribe(()=>{
             //     //in here, we filtered posts only to show all posts except the deleted post
             //     const updatedPosts=this.posts.filter(post => post.id !== postId);
