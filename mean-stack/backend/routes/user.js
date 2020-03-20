@@ -51,7 +51,7 @@ router.post('/login', (req,res,next)=>{
             //1. parameter -> payload(a part of the user's information)
             //2.parameter -> our secret key (we can define it whatever we want)
             //3.parameter -> options about token
-            const token=jwt.sign({email:fetchedUser.email, userId:fetchedUser._id}, 'secret_key_that_should_be_longer', 
+            const token=jwt.sign({email:fetchedUser.email, userId:fetchedUser._id}, process.env.JWT_KEY, 
             {
                 //1 hour
                 expiresIn:"1h"

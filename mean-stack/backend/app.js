@@ -9,7 +9,7 @@ const userRoutes=require('./routes/user');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://alibulut:LJEpE1QGsRP9fSL4@mean-stack-db-uyxqu.mongodb.net/mean-stack-db?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false, useCreateIndex:true })
+mongoose.connect('mongodb+srv://alibulut:'+process.env.MONGO_ATLAS_PW+'@mean-stack-db-uyxqu.mongodb.net/mean-stack-db?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false, useCreateIndex:true })
     .then(()=>{
         console.log("Connected to database!");
     })
